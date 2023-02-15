@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import * as Highcharts from 'highcharts';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { Unsubscriber } from '../common/unsubscriber';
+import { takeUntil } from 'rxjs';
+import { Unsubscriber } from '../../common/unsubscriber';
 import { chartOptions } from './highchart.config';
 import { BalanceService } from './balance.service';
 
@@ -25,7 +26,7 @@ export class BalanceComponent extends Unsubscriber implements OnInit {
    ngOnInit(): void {
       this.chart = Highcharts.chart('chart', chartOptions);
       this.service.init();
-      this.subs = this.service.data$.subscribe((data) => {
+      this.service.data$.pipe(takeUntil(this._destroy$)).subscribe((data) => {
          const preparedData = data.map(({ time, value }) => ([time, value]));
 
          this.chart!.series[0].setData([...preparedData]);

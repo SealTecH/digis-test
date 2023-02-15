@@ -6,9 +6,9 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { StockDialogComponent, StockDialogData } from '../dialogs/stock-dialog/stock-dialog.component';
-import { Stock } from '../common/interfaces';
-import { mockShares } from '../common/mocks';
+import { StockDialogComponent, StockDialogData } from '../../dialogs/stock-dialog/stock-dialog.component';
+import { Stock } from '../../common/interfaces';
+import { mockShares } from '../../common/mocks';
 import { DashboardService } from './dashboard.service';
 
 @Component({

@@ -12,7 +12,7 @@ export class DbService {
       return of(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]') as Stock[]);
    }
 
-   addStockTrade(stock: Stock): Observable<any> {
+   addStockTrade(stock: Stock): Observable<never> {
       const stocks: Stock[] = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
 
       stocks.push({
@@ -21,17 +21,17 @@ export class DbService {
       });
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(stocks));
 
-      return of(null);
+      return of();
    }
 
-   editStockTrade(stock: Stock): Observable<any> {
+   editStockTrade(stock: Stock): Observable<never> {
       const stocks: Stock[] = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
       const index = stocks.findIndex(el => el.id === stock.id);
 
       stocks[index] = stock;
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(stocks));
 
-      return of(null);
+      return of();
    }
 
    getBalance(): Observable<Balance[]> {

@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { takeUntil } from 'rxjs';
 import { Stock, FormEntity, Share } from '../../common/interfaces';
 import { Unsubscriber } from '../../common/unsubscriber';
 import { lessThanValueValidator } from './validators';
@@ -127,7 +128,7 @@ export class StockDialogComponent extends Unsubscriber implements OnInit {
    }
 
    private listenToControlChanges(): void {
-      this.subs = this.form.controls.enterPrice.valueChanges.subscribe(() => {
+      this.form.controls.enterPrice.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
          this.form.controls.exitPrice.updateValueAndValidity();
 
          if (this.form.controls.exitPrice.pristine && !!this.form.controls.exitPrice.errors) {

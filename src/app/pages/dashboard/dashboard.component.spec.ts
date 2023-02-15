@@ -3,9 +3,9 @@ import { BehaviorSubject, take, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MockComponent } from 'ng-mocks';
-import { MockRouter } from '../common/test-utils';
-import { mockStocks, mockShares } from '../common/mocks';
-import { StockDialogComponent } from '../dialogs/stock-dialog/stock-dialog.component';
+import { RouterTestingModule } from '@angular/router/testing';
+import { mockStocks, mockShares } from '../../common/mocks';
+import { StockDialogComponent } from '../../dialogs/stock-dialog/stock-dialog.component';
 import { DashboardService } from './dashboard.service';
 import { DashboardComponent } from './dashboard.component';
 import createSpy = jasmine.createSpy;
@@ -25,7 +25,7 @@ describe('DashboardComponent', () => {
 
    let component: DashboardComponent;
    let fixture: ComponentFixture<DashboardComponent>;
-   let router: MockRouter;
+   let router: Router;
    let service: MockDashboardService;
    let dialog: MockDialogService;
 
@@ -33,10 +33,10 @@ describe('DashboardComponent', () => {
       await TestBed.configureTestingModule({
          imports: [
             DashboardComponent,
-            MockComponent(StockDialogComponent)
+            MockComponent(StockDialogComponent),
+            RouterTestingModule
          ],
          providers: [
-            { provide: Router, useClass: MockRouter },
             { provide: MatDialog, useClass: MockDialogService },
             { provide: DashboardService, useClass: MockDashboardService }
          ]
@@ -52,6 +52,7 @@ describe('DashboardComponent', () => {
       fixture = TestBed.createComponent(DashboardComponent);
       component = fixture.componentInstance;
       router = TestBed.inject(Router) as any;
+      spyOn(router, 'navigate');
       service = fixture.debugElement.injector.get(DashboardService) as any;
       dialog = fixture.debugElement.injector.get(MatDialog) as any;
       fixture.detectChanges();
