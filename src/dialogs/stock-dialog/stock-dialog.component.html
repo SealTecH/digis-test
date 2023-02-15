@@ -1,0 +1,53 @@
+
+<h2 mat-dialog-title>Please fill Stock</h2>
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="form">
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Chose enter and exit dates</mat-label>
+        <mat-date-range-input [min]="minDate" [rangePicker]="picker">
+          <input matStartDate formControlName="enterDate" placeholder="Enter date">
+          <input matEndDate formControlName="exitDate"  placeholder="Exit date">
+        </mat-date-range-input>
+        <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-error *ngIf="form.controls.enterDate.hasError('required')">Enter date is missing</mat-error>
+        <mat-error *ngIf="form.controls.exitDate.hasError('required')">Exit date is missing</mat-error>
+        <mat-error *ngIf="form.controls.enterDate.hasError('matStartDateInvalid')">Invalid enter date</mat-error>
+        <mat-error *ngIf="form.controls.exitDate.hasError('matEndDateInvalid')">Invalid Exit date</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Enter price</mat-label>
+        <input matInput type="number" formControlName="enterPrice">
+        <mat-error *ngIf="form.controls.enterPrice.hasError('min')">Price must be greater than 0</mat-error>
+        <mat-error *ngIf="form.controls.enterPrice.hasError('required')">Price is missing. Please type a number </mat-error>
+        <mat-error *ngIf="form.controls.enterPrice.hasError('max')">Price must be less than 1 000 000</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field>
+        <mat-label>Exit price</mat-label>
+        <input matInput type="number" formControlName="exitPrice">
+        <mat-error *ngIf="form.controls.exitPrice.hasError('min')">Price must be greater than 0</mat-error>
+        <mat-error *ngIf="form.controls.exitPrice.hasError('required')">Price is missing. Please type a number </mat-error>
+        <mat-error *ngIf="form.controls.exitPrice.hasError('max')">Price must be less than 1 000 000</mat-error>
+        <mat-error *ngIf="form.controls.exitPrice.hasError('mustBeLessThan')">{{form.controls.exitPrice.errors!['mustBeLessThan']}}</mat-error>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field appearance="fill">
+        <mat-label>Choose a share</mat-label>
+        <mat-select formControlName="shareId">
+          <mat-option *ngFor="let item of data.sharesList" [value]="item.id">{{ item.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button [disabled]="form.invalid" (click)="saveStock()"> Save </button>
+</mat-dialog-actions>

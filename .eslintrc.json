@@ -1,0 +1,176 @@
+{
+   "env": {
+      "browser": true,
+      "es6": true,
+      "jasmine": true
+   },
+   "extends": [
+      "airbnb-base",
+      "plugin:import/errors",
+      "plugin:import/warnings",
+      "plugin:import/typescript",
+      "plugin:jasmine/recommended"
+   ],
+   "globals": {
+      "Atomics": "readonly",
+      "SharedArrayBuffer": "readonly"
+   },
+   "parser": "@typescript-eslint/parser",
+   "parserOptions": {
+      "ecmaVersion": 2018,
+      "sourceType": "module"
+   },
+   "plugins": [
+      "@typescript-eslint",
+      "import",
+      "jasmine"
+   ],
+   "settings": {
+      "import/parsers": {
+         "@typescript-eslint/parser": [
+            ".ts",
+            ".tsx"
+         ]
+      },
+      "import/resolver": {
+         "typescript": {}
+      }
+   },
+   "rules": {
+      "jasmine/new-line-before-expect": 0,
+      "jasmine/no-unsafe-spy": 0,
+      "jasmine/new-line-between-declarations": 0,
+      "jasmine/prefer-toHaveBeenCalledWith": 0,
+      "jasmine/no-spec-dupes": 0,
+      "jasmine/no-suite-dupes": 0,
+      "import/extensions": "off",
+      "import/no-unresolved": "error",
+      "import/no-extraneous-dependencies": [
+         "error",
+         {
+            "devDependencies": true
+         }
+      ],
+     "function-paren-newline": ["error", "consistent"],
+      "lines-between-class-members": [
+         "error",
+         "always",
+         {
+            "exceptAfterSingleLine": true
+         }
+      ],
+      "no-console": [
+         "error",
+         {
+            "allow": [
+               "warn",
+               "error"
+            ]
+         }
+      ],
+      "no-unused-vars": "off",
+      "no-use-before-define": ["error", { "classes": false }],
+      "comma-dangle": ["error", "never"],
+      "no-prototype-builtins": "off",
+      "@typescript-eslint/no-unused-vars": [
+         "error",
+         {
+            "vars": "all",
+            "args": "after-used",
+            "ignoreRestSiblings": true
+         }
+      ],
+      "no-useless-constructor": "off",
+      "@typescript-eslint/no-useless-constructor": ["error"],
+      "@typescript-eslint/type-annotation-spacing": [
+         "error",
+         {
+            "after": true
+         }
+      ],
+      "@typescript-eslint/explicit-member-accessibility": [
+         "error",
+         {
+            "accessibility": "no-public",
+            "overrides": {
+               "parameterProperties": "explicit"
+            }
+         }
+      ],
+      "@typescript-eslint/explicit-function-return-type": [
+         "error",
+         {
+            "allowExpressions": true,
+            "allowHigherOrderFunctions": true
+         }
+      ],
+      "import/order": [
+         "error",
+         {
+            "newlines-between": "never"
+         }
+      ],
+      "arrow-parens": ["error", "as-needed", { "requireForBlockBody":  true }],
+      "no-empty-function": "off",
+      "@typescript-eslint/no-empty-function": ["error", { "allow":  ["arrowFunctions", "private-constructors"]}],
+      "no-plusplus": "off",
+      "no-return-assign": "off",
+      "no-underscore-dangle": "off",
+      "import/prefer-default-export": "off",
+      "quotes": [
+         "error",
+         "single"
+      ],
+      "semi": [
+         "error",
+         "always"
+      ],
+      "padded-blocks": ["error", "never"],
+      "padding-line-between-statements": [
+         "error",
+         {"blankLine": "always", "prev": ["const", "let", "block-like"], "next": "*"},
+         {"blankLine": "always", "prev": "*", "next": ["const", "let", "block-like"]},
+         {"blankLine": "any", "prev": ["const", "let"], "next": ["const", "let"]},
+         {"blankLine": "always", "prev": "*", "next": ["function"]},
+         {"blankLine": "any", "prev": "function", "next": "*"},
+         {"blankLine": "always", "prev": "*", "next": ["return"]}
+      ],
+      "@typescript-eslint/member-ordering": [
+         "error",
+         {
+            "default": [
+               "public-static-field",
+               "public-static-method",
+               "protected-static-field",
+               "protected-static-method",
+               "private-static-field",
+               "private-static-method",
+               "public-constructor",
+               "public-instance-method",
+               "protected-instance-method",
+               "private-instance-method"
+            ]
+         }
+      ],
+      "no-dupe-class-members": "off",
+      "@typescript-eslint/no-dupe-class-members": ["error"],
+      "class-methods-use-this": "off",
+      "max-len": [
+         "error",
+         {
+            "code": 140,
+            "ignoreUrls": true,
+            "ignorePattern": "^import [^,]+ from |^export | implements"
+         }
+      ],
+      "indent": ["error", 3]
+   },
+   "overrides": [
+      {
+         "files": ["*.spec.ts"],
+         "rules": {
+            "max-classes-per-file": "off"
+         }
+      }
+   ]
+}
