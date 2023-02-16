@@ -29,7 +29,7 @@ export class BalanceComponent extends Unsubscriber implements OnInit {
       this.service.data$.pipe(takeUntil(this._destroy$)).subscribe((data) => {
          const preparedData = data.map(({ time, value }) => ([time, value]));
 
-         this.chart!.series[0].setData([...preparedData]);
+        this.chart!.series[0].setData([...preparedData]);
       });
    }
 

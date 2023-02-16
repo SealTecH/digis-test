@@ -1,40 +1,41 @@
 import * as Highcharts from 'highcharts';
+
 export const chartOptions: Highcharts.Options = {
 
-  chart: {
-    renderTo: 'chart',
-    marginLeft: 100,
-  },
+   chart: {
+      renderTo: 'chart',
+      marginLeft: 100
+   },
 
-  title: {
-    text: 'Balance over time'
-  },
+   title: {
+      text: 'Balance over time'
+   },
 
-  yAxis: {
-    title: {
-      text: ''
-    }
-  },
+   yAxis: {
+      title: {
+         text: ''
+      }
+   },
 
-  xAxis: {
-    type: 'datetime',
-    min: new Date().getTime(),
-    labels: {
-    }
-  },
+   xAxis: {
+      type: 'datetime',
+      min: null,
+      labels: {
+      }
+   },
 
-  legend: {
-    enabled: false
-  },
+   legend: {
+      enabled: false
+   },
 
-  series: [{
-    type: 'line',
-    zoneAxis: 'x',
-    dataLabels: {
-      enabled: true,
-      format: '{y:,.2f}'
-    },
-    data: []
-  }]
+   series: [{
+      type: 'line',
+      zoneAxis: 'x',
+      dataLabels: {
+         enabled: true,
+         format: '{y:,.2f}'
+      },
+      data: []
+   }]
 
-}
+};

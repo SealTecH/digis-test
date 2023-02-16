@@ -21,9 +21,19 @@ export const mockShares: Share[] = [
 
 export const mockStocks: Stock[] = [
    {
-      enterPrice: 6666, exitPrice: 111, id: '1676403986217', shareId: 0, enterDate: 1676412000000, exitDate: 1677448800000
+      enterPrice: 222,
+      exitPrice: 333,
+      id: '1676403986217',
+      shares: 5,
+      enterDate: 1676412000000,
+      exitDate: 1677448800000
    },
    {
-      enterPrice: 3333, exitPrice: 222, id: '1676403997914', shareId: 2, enterDate: 1676584800000, exitDate: 1677189600000
+      enterPrice: 3333,
+      exitPrice: 4444,
+      id: '1676403997914',
+      shares: 2,
+      enterDate: 1676584800000,
+      exitDate: 1677189600000
    }
 ];

@@ -21,7 +21,7 @@ export class DashboardService {
       });
    }
 
-   addStockTrade(stock: Stock): Observable<any> {
+   addStockTrade(stock: Stock): Observable<Stock[]> {
       this.loadingSource.next(true);
 
       return this.dbService.addStockTrade(stock).pipe(
@@ -31,10 +31,20 @@ export class DashboardService {
       );
    }
 
-   editStockTrade(stock: Stock): Observable<any> {
+   editStockTrade(stock: Stock): Observable<Stock[]> {
       this.loadingSource.next(true);
 
       return this.dbService.editStockTrade(stock).pipe(
+         take(1),
+         switchMap(() => this.retrieveStocks()),
+         finalize(() => this.loadingSource.next(false))
+      );
+   }
+
+   deleteStockTrade(id: string): Observable<Stock[]> {
+      this.loadingSource.next(true);
+
+      return this.dbService.deleteStockTrade(id).pipe(
          take(1),
          switchMap(() => this.retrieveStocks()),
          finalize(() => this.loadingSource.next(false))

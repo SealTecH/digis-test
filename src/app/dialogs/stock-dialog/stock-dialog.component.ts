@@ -12,14 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { takeUntil } from 'rxjs';
-import { Stock, FormEntity, Share } from '../../common/interfaces';
+import { Stock, FormEntity } from '../../common/interfaces';
 import { Unsubscriber } from '../../common/unsubscriber';
-import { lessThanValueValidator } from './validators';
-
-export interface StockDialogData {
-  stock: Stock | null,
-  sharesList: Share[];
-}
 
 interface StockForm {
   enterDate: Date | null;
@@ -27,7 +21,7 @@ interface StockForm {
   enterPrice: number | null;
   exitPrice: number | null;
   id: string | null;
-  shareId: number | null;
+  shares: number | null;
 }
 
 @Component({
@@ -48,7 +42,6 @@ interface StockForm {
    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class StockDialogComponent extends Unsubscriber implements OnInit {
-   minDate = new Date();
    form: FormGroup<FormEntity<StockForm>> = new FormGroup<FormEntity<StockForm>>({
       enterDate: new FormControl<Date | null>(
          null,
@@ -71,29 +64,26 @@ export class StockDialogComponent extends Unsubscriber implements OnInit {
          [
             Validators.required,
             Validators.min(0),
-            Validators.max(1000000),
-            (control: FormControl) => lessThanValueValidator(control,
-               this.form?.controls.enterPrice.value,
-               'Exit price cannot be greater than enter price')
+            Validators.max(1000000)
          ]
       ),
       id: new FormControl<string | null>(null),
-      shareId: new FormControl<number | null>(
+      shares: new FormControl<number | null>(
          null,
-         { nonNullable: true, validators: [Validators.required] }
+         [Validators.required, Validators.min(1), Validators.max(1000)]
       )
    });
 
    constructor(
     private dialogRef: MatDialogRef<StockDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: StockDialogData
+    @Inject(MAT_DIALOG_DATA) public data: Stock | null
    ) {
       super();
    }
 
    ngOnInit(): void {
-      if (this.data.stock) {
-         this.form.setValue(this.normalizeStock(this.data.stock));
+      if (this.data) {
+         this.form.setValue(this.normalizeStock(this.data));
          this.form.markAsPristine();
       }
 
@@ -121,7 +111,7 @@ export class StockDialogComponent extends Unsubscriber implements OnInit {
          enterPrice: value.enterPrice!,
          exitPrice: value.exitPrice!,
          id: value.id!,
-         shareId: value.shareId!,
+         shares: value.shares!,
          enterDate: value.enterDate!.getTime(),
          exitDate: value.exitDate!.getTime()
       };
@@ -131,7 +121,9 @@ export class StockDialogComponent extends Unsubscriber implements OnInit {
       this.form.controls.enterPrice.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(() => {
          this.form.controls.exitPrice.updateValueAndValidity();
 
-         if (this.form.controls.exitPrice.pristine && !!this.form.controls.exitPrice.errors) {
+         if (this.form.controls.exitPrice.pristine
+           && !!this.form.controls.exitPrice.errors
+           && this.form.controls.exitPrice.value !== null) {
             this.form.controls.exitPrice.markAsTouched();
          }
       });

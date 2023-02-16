@@ -34,6 +34,16 @@ export class DbService {
       return of(null);
    }
 
+   deleteStockTrade(id: string): Observable<null> {
+      const stocks: Stock[] = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY) || '[]');
+      const index = stocks.findIndex(el => el.id === id);
+
+      stocks.splice(index, 1);
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(stocks));
+
+      return of(null);
+   }
+
    getBalance(): Observable<Balance[]> {
       const data: Balance[] = [...Array(10)].map((_value, index) => ({
          time: new Date().getTime() + (index + 1) * 3600 * 1000,

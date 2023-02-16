@@ -6,9 +6,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { take } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { StockDialogComponent, StockDialogData } from '../../dialogs/stock-dialog/stock-dialog.component';
+import { StockDialogComponent } from '../../dialogs/stock-dialog/stock-dialog.component';
 import { Stock } from '../../common/interfaces';
-import { mockShares } from '../../common/mocks';
+import { ConfirmDialogComponent, ConfirmDialogData } from '../../dialogs/confirm-dialog/confirm-dialog.component';
+import { calculatePnL } from '../../common/functions';
 import { DashboardService } from './dashboard.service';
 
 @Component({
@@ -21,7 +22,7 @@ import { DashboardService } from './dashboard.service';
    providers: [DashboardService]
 })
 export class DashboardComponent implements OnInit {
-   readonly displayedColumns = ['share', 'enterPrice', 'exitPrice', 'enterDate', 'exitDate', 'edit'];
+   readonly displayedColumns = ['shares', 'enterPrice', 'exitPrice', 'enterDate', 'exitDate', 'pnl', 'actions'];
    readonly data$ = this.service.data$;
    readonly loading$ = this.service.loading$;
    constructor(private router: Router, private dialog: MatDialog, private service: DashboardService) {
@@ -35,17 +36,17 @@ export class DashboardComponent implements OnInit {
       this.router.navigate(['balance']);
    }
 
-   getShare(id: number): string {
-      return mockShares.find(share => share.id === id)!.name;
-   }
-
    getDate(timestamp: number): string {
       return new Date(timestamp).toDateString();
    }
 
+   getPnL({ exitPrice, enterPrice, shares }: Stock): number {
+      return calculatePnL(enterPrice, exitPrice, shares);
+   }
+
    createStockTrade(): void {
-      const dialogRef = this.dialog.open<StockDialogComponent, StockDialogData, Stock>(StockDialogComponent, {
-         data: { stock: null, sharesList: mockShares }, disableClose: true
+      const dialogRef = this.dialog.open<StockDialogComponent, Stock | null, Stock>(StockDialogComponent, {
+         data: null, disableClose: true
       });
 
       dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
@@ -56,13 +57,30 @@ export class DashboardComponent implements OnInit {
    }
 
    editStock(stock: Stock): void {
-      const dialogRef = this.dialog.open<StockDialogComponent, StockDialogData, Stock>(StockDialogComponent, {
-         data: { stock, sharesList: mockShares }, disableClose: true
+      const dialogRef = this.dialog.open<StockDialogComponent, Stock | null, Stock>(StockDialogComponent, {
+         data: stock, disableClose: true
       });
 
       dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
          if (result) {
             this.service.editStockTrade(result).pipe(take(1)).subscribe();
+         }
+      });
+   }
+
+   deleteStock({ id }: Stock): void {
+      const dialogRef = this.dialog.open<ConfirmDialogComponent, ConfirmDialogData, boolean>(ConfirmDialogComponent, {
+         data: {
+            title: 'Confirm deletion',
+            message: 'Are you sure you want to delete this record& You cannot undo this operation',
+            primaryButtonLabel: 'Yes'
+         },
+         disableClose: true
+      });
+
+      dialogRef.afterClosed().pipe(take(1)).subscribe((result) => {
+         if (result) {
+            this.service.deleteStockTrade(id!).pipe(take(1)).subscribe();
          }
       });
    }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MockComponent } from 'ng-mocks';
 import { RouterTestingModule } from '@angular/router/testing';
-import { mockStocks, mockShares } from '../../common/mocks';
+import { mockStocks } from '../../common/mocks';
 import { StockDialogComponent } from '../../dialogs/stock-dialog/stock-dialog.component';
 import { DashboardService } from './dashboard.service';
 import { DashboardComponent } from './dashboard.component';
@@ -76,7 +76,7 @@ describe('DashboardComponent', () => {
       component.createStockTrade();
 
       expect(dialog.open).toHaveBeenCalledOnceWith(StockDialogComponent, {
-         data: { stock: null, sharesList: mockShares }, disableClose: true
+         data: null, disableClose: true
       });
    });
 
@@ -88,7 +88,7 @@ describe('DashboardComponent', () => {
    it('should open dialog for edit stock', () => {
       component.editStock(mockStocks[0]);
       expect(dialog.open).toHaveBeenCalledOnceWith(StockDialogComponent, {
-         data: { stock: mockStocks[0], sharesList: mockShares }, disableClose: true
+         data: mockStocks[0], disableClose: true
       });
    });
 

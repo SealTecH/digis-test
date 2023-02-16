@@ -6,7 +6,7 @@ export interface Stock {
   enterPrice: number;
   exitPrice: number;
   id: string | null;
-  shareId: number;
+  shares: number;
 }
 
 export interface Share {
