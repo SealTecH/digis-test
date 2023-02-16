@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {
    BehaviorSubject, take, finalize, Observable, switchMap, tap
 } from 'rxjs';
+import { Sort } from '@angular/material/sort';
+import { sortBy } from 'lodash-es';
 import { Stock } from '../../common/interfaces';
 import { DbService } from '../../services/db.service';
 
@@ -29,6 +31,19 @@ export class DashboardService {
          switchMap(() => this.retrieveStocks()),
          finalize(() => this.loadingSource.next(false))
       );
+   }
+
+   sortData(sort: Sort): void {
+      this.loadingSource.next(true);
+
+      let sortedList = sortBy(this.dataSource.value, ['exitDate']);
+
+      if (sort.direction === 'desc') {
+         sortedList = sortedList.reverse();
+      }
+
+      this.dataSource.next(sortedList);
+      this.loadingSource.next(false);
    }
 
    editStockTrade(stock: Stock): Observable<Stock[]> {
