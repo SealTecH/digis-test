@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MockComponent } from 'ng-mocks';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { mockStocks } from '../../common/mocks';
 import { StockDialogComponent } from '../../dialogs/stock-dialog/stock-dialog.component';
 import { DashboardService } from './dashboard.service';
@@ -34,7 +35,8 @@ describe('DashboardComponent', () => {
          imports: [
             DashboardComponent,
             MockComponent(StockDialogComponent),
-            RouterTestingModule
+            RouterTestingModule,
+            NoopAnimationsModule
          ],
          providers: [
             { provide: MatDialog, useClass: MockDialogService },
