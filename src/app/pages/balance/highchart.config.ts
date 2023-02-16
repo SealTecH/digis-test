@@ -19,8 +19,9 @@ export const chartOptions: Highcharts.Options = {
 
    xAxis: {
       type: 'datetime',
-      min: null,
+      softMin: new Date().getTime(),
       labels: {
+         format: '{value:%Y-%m-%d}'
       }
    },
 

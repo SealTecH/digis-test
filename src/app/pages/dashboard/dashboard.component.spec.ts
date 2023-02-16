@@ -7,6 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { mockStocks } from '../../common/mocks';
 import { StockDialogComponent } from '../../dialogs/stock-dialog/stock-dialog.component';
+import { calculatePnL } from '../../common/functions';
 import { DashboardService } from './dashboard.service';
 import { DashboardComponent } from './dashboard.component';
 import createSpy = jasmine.createSpy;
@@ -65,8 +66,15 @@ describe('DashboardComponent', () => {
    });
 
    it('should show stocks list', () => {
+      const expected = mockStocks.map(stock => ({
+         ...stock,
+         enterDate: new Date(stock.enterDate).toDateString(),
+         exitDate: new Date(stock.exitDate).toDateString(),
+         pnl: calculatePnL(stock.enterPrice, stock.exitPrice, stock.shares)
+      }));
+
       component.data$.pipe(take(1)).subscribe((list) => {
-         expect(list).toEqual(mockStocks);
+         expect(list).toEqual(expected);
       });
    });
 

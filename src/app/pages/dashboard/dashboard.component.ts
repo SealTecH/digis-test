@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { take } from 'rxjs';
+import { take, map } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -27,7 +27,15 @@ import { DashboardService } from './dashboard.service';
 export class DashboardComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort!: MatSort;
   readonly displayedColumns = ['shares', 'enterPrice', 'exitPrice', 'enterDate', 'exitDate', 'pnl', 'actions'];
-  readonly data$ = this.service.data$;
+  readonly data$ = this.service.data$.pipe(
+     map(stocks => stocks.map(stock => ({
+        ...stock,
+        enterDate: new Date(stock.enterDate).toDateString(),
+        exitDate: new Date(stock.exitDate).toDateString(),
+        pnl: calculatePnL(stock.enterPrice, stock.exitPrice, stock.shares)
+     })))
+  );
+
   readonly loading$ = this.service.loading$;
   constructor(private router: Router, private dialog: MatDialog, private service: DashboardService) {
   }
@@ -42,14 +50,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   navigateToBalance(): void {
      this.router.navigate(['balance']);
-  }
-
-  getDate(timestamp: number): string {
-     return new Date(timestamp).toDateString();
-  }
-
-  getPnL({ exitPrice, enterPrice, shares }: Stock): number {
-     return calculatePnL(enterPrice, exitPrice, shares);
   }
 
   createStockTrade(): void {
